@@ -1,0 +1,4 @@
+interface:
+  display_name: "Nix Toolbox"
+  short_description: "Use Nix tools to inspect, reproduce, and verify work"
+  default_prompt: "Use $nix-toolbox to select and run the smallest useful Nix tools for this task, preserving the project's pins and scope."
