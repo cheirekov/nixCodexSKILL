@@ -67,7 +67,8 @@ Restart. Не е нужно да прекъсвате друга активна 
 ## Инструменти
 
 Toolbox flake-ът има отделни apps: `statix`, `deadnix`, `nixfmt`, `nix-locate`,
-`nom`, `nix-diff`, `nix-init`, `nix-update`, `nix-fast-build`, `mcp-nixos`.
+`nom`, `nix-diff`, `nix-init`, `nix-update`, `nix-fast-build`, `mcp-nixos`,
+`treefmt`, `pre-commit`, `direnv`, `nurl`.
 Изтегля се само избраният инструмент и зависимостите му.
 
 ```bash
@@ -86,8 +87,16 @@ Toolbox pin-ът избира версиите на помощните инст�
 Upstream код и документални корпуси не са vendored в това репо.
 
 [Процедури](skills/nix-toolbox/references/tools.md) ·
+[Форматиране, hooks и direnv](skills/nix-toolbox/references/quality.md) ·
+[Интеграции при нужда](skills/nix-toolbox/references/integrations.md) ·
 [Граници на изпълнение](skills/nix-toolbox/references/execution.md) ·
 [Проверки и ограничения](VALIDATION.md)
+
+Skill-ът разпознава проектните treefmt/git-hooks проверки и проверява за стара
+nix-direnv среда. `nurl` служи за source fetcher/hash без генериране на цял пакет.
+Toolbox flake-ът има заключени treefmt-nix и git-hooks.nix inputs и собствени
+примерни проверки. Не инсталира hooks или direnv в потребителската среда.
+Кратки справки за uv2nix, crane и namaka се зареждат само при подходяща задача.
 
 ## Обновяване
 
@@ -106,6 +115,8 @@ nix flake check --all-systems --no-build --no-write-lock-file
 
 Прегледайте version/flag промените и native изпълнението преди commit.
 Project inputs не се обновяват като страничен ефект.
+За отделно обновяване на интеграциите използвайте
+`nix flake update treefmt-nix git-hooks` в същата директория и проверете diff-а.
 
 Проверки на нашия код от корена на репото:
 
@@ -114,9 +125,21 @@ nix shell --no-write-lock-file ./skills/nix-toolbox#python3 -c python3 -B -m uni
 nix flake check --all-systems --no-build --no-write-lock-file ./skills/nix-toolbox
 ```
 
+Кратки native проверки на реалните treefmt/git-hooks интеграции (пример за x86_64):
+
+```bash
+nix build --option builders '' --no-write-lock-file --no-link \
+  ./skills/nix-toolbox#checks.x86_64-linux.formatting \
+  ./skills/nix-toolbox#checks.x86_64-linux.git-hooks
+```
+
+Това изпълнява проверки, без инсталиране на Git hooks. Първото изпълнение може
+да изтегли инструменти; не е нужно да се повтаря при всяка употреба на skill-а.
+
 ## Източници и лиценз
 
-[best-of-nix](https://github.com/tolkonepiu/best-of-nix) служи за откриване на
+[best-of-nix](https://github.com/tolkonepiu/best-of-nix) и
+[awesome-nix](https://github.com/nix-community/awesome-nix) служат за откриване на
 инструменти. Допълващи knowledge skills: [nix-skills](https://github.com/olafkfreund/nix-skills),
 [nixos-ai-skill](https://github.com/marceloeatworld/nixos-ai-skill),
 [juspay/skills](https://github.com/juspay/skills). Не е необходимо да зареждате

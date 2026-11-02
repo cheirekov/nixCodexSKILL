@@ -30,15 +30,18 @@ Choose one route:
 | --- | --- | --- |
 | Missing command/library | Existing shell; otherwise `nix-locate` or targeted package search | Actual binary/file and package attribute at the chosen pin |
 | Different developer/CI environments | Existing devShell, shell.nix, devenv, or devbox | Same locked dependencies and test command in both contexts |
+| Formatting/hooks or stale direnv | [Environment and quality recipes](references/quality.md) | Project checks; current shell rather than cached fallback |
 | Nix code review | `statix check`, `deadnix --fail`, project formatter in check mode | File/line diagnostics; verify each proposed fix |
 | Evaluation/build failure | Exact output evaluation, build log, derivation metadata | First actionable failure and its phase |
 | Unexpected rebuild/large closure | `nix-diff`, `nix why-depends`, `nix path-info` | Changed derivation input or concrete dependency path |
-| New package | `nix-init` in scratch, then target-pin evaluation/build | Reviewed dependencies, hashes, license, runtime test |
+| Source/hash or new package | `nurl` for a fetcher; `nix-init` for a package, in scratch | Immutable source, hash, target-pin evaluation/build |
 | Many independent checks | Existing CI; consider `nix-fast-build` after measuring | Explicit system/outputs, bounded parallelism, timings |
 
 Read [tool recipes](references/tools.md) only for the selected route. Read
 [execution contracts](references/execution.md) for builds, CI, remote stores,
 NixOS operations, or delegation.
+For uv/Rust packaging or Nix snapshot tests, consult the small
+[optional integrations](references/integrations.md) list only when needed.
 
 ## 2. Run in the correct environment
 

@@ -91,6 +91,22 @@ nix run --no-write-lock-file "path:$TOOLBOX#nix-diff" -- /nix/store/OLD.drv /nix
 
 ## Package or update software
 
+For just a source fetcher/hash, prefer `nurl` over scaffolding a whole package:
+
+```bash
+nix run --no-write-lock-file "path:$TOOLBOX#nurl" -- --help
+nix run --no-write-lock-file "path:$TOOLBOX#nurl" -- --json REPOSITORY_URL COMMIT
+```
+
+Use an immutable upstream commit. `--parse URL COMMIT` returns parsed JSON but
+does not fetch/verify a source hash; the pinned version rejects combining
+`--parse` with `--json`. A real hash fetch uses network and
+may populate the Nix store. Capture stdout to scratch, review fetcher arguments
+(including submodules), then evaluate against the project's pin. Do not insert
+the output blindly or treat a content hash as a provenance/signature check.
+Avoid command-line credentials and private URLs in logs.
+[nurl](https://github.com/nix-community/nurl).
+
 Read the pinned helpers' `--help` first. `nix-init` can infer dependencies and
 prefetch hashes from an upstream URL; run it in scratch with an explicit output.
 Disable implicit commit/overwrite through its supported flags or a dedicated

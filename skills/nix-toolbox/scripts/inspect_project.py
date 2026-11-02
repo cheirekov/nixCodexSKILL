@@ -26,7 +26,9 @@ def inspect(root):
         "AGENTS.md", "flake.nix", "flake.lock", "shell.nix", "default.nix",
         "devenv.nix", "devenv.yaml", "devenv.lock", "devbox.json", "devbox.lock",
         ".envrc", "pyproject.toml", "package.json", "Cargo.toml", "go.mod",
-        "statix.toml", "treefmt.toml", "treefmt.nix",
+        "statix.toml", "treefmt.toml", "treefmt.nix", ".pre-commit-config.yaml",
+        ".pre-commit-config.yml", ".pre-commit-config.nix", "git-hooks.nix",
+        "uv.lock", "Cargo.lock", "namaka.toml",
     ]
     machine = platform.machine()
     arch = {"amd64": "x86_64", "arm64": "aarch64"}.get(machine, machine)
