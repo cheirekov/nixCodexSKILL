@@ -31,6 +31,7 @@ Choose one route:
 | Need | First action | Evidence to obtain |
 | --- | --- | --- |
 | Missing command/library | Existing shell; otherwise `nix-locate` or targeted package search | Actual binary/file and package attribute at the chosen pin |
+| Historical package version | [Version lookup recipe](references/tools.md#find-a-historical-version) | Indexed revision, exact system, cache availability |
 | Different developer/CI environments | Existing devShell, shell.nix, devenv, or devbox | Same locked dependencies and test command in both contexts |
 | Formatting/hooks or stale direnv | [Environment and quality recipes](references/quality.md) | Project checks; current shell rather than cached fallback |
 | Nix code review | `statix check`, `deadnix --fail`, project formatter in check mode | File/line diagnostics; verify each proposed fix |

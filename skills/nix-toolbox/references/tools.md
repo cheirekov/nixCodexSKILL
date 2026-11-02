@@ -30,6 +30,46 @@ Keep the project's formatter and versions when they are already defined.
 
 [nix-index upstream](https://github.com/nix-community/nix-index).
 
+## Find a historical version
+
+Use this route when an exact older tool or a version comparison is needed.
+Start with the project's pin and existing package attributes. MCP-NixOS
+`nix_versions`, when available, can resolve version history without adding an
+input. For indexed date/version queries or temporary historical tools, consider
+[nixpkgs-multiverse](https://github.com/fzakaria/nixpkgs-multiverse).
+
+Resolve `MULTIVERSE_REF` to `github:fzakaria/nixpkgs-multiverse/FULL_COMMIT`,
+then inspect that revision's CLI help. From scratch, for example:
+
+```bash
+nix run --no-write-lock-file "$MULTIVERSE_REF#mvs" -- query versions ripgrep --json
+```
+
+Queries read the bundled index; acquiring the CLI/index can still download or
+build dependencies. Coverage is the indexed revisions, not every Git commit or
+every upstream release. Record the multiverse commit, selected nixpkgs revision,
+attribute, version and target system before using a result.
+
+The `fast.*` selectors substitute indexed store outputs without evaluating the
+historical nixpkgs tree. They are system-specific and fail for missing entries;
+do not infer an automatic source-build fallback. Check current cache availability
+and closure transfer first. A normal evaluation selector may fetch a large old
+nixpkgs tree and require source builds. Choose that explicitly within the task's
+cost scope. A fast revision selector may use a canonical build of the same
+version from a different revision; use normal evaluation when exact original
+patches/build inputs matter.
+
+Prefer historical packages as isolated CLI tools. Matching version strings do
+not establish ABI compatibility for libraries or Python extensions from different
+revisions. Preserve project overlays/unfree settings and review compatibility
+before persisting a dependency. `mvs lock` and module pinning change project or
+host configuration; do not run them merely to investigate a version.
+
+[CLI and index semantics](https://github.com/fzakaria/nixpkgs-multiverse/blob/main/docs/cli.md),
+[fast-path systems and revision semantics](https://github.com/fzakaria/nixpkgs-multiverse/blob/main/docs/store-paths.md).
+This optional route is documentation-reviewed; runtime use remains to be verified
+on a project that needs a historical version.
+
 ## Review Nix code
 
 ```bash
