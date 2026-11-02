@@ -12,7 +12,9 @@ Go, Rust, JavaScript, or infrastructure code.
 ## 1. Inspect and choose
 
 Resolve this skill's directory as `TOOLBOX` and the target project as `PROJECT`.
-Use absolute paths. Run the metadata inspector when it will save manual discovery:
+Use absolute paths. When the installed skill directory is a symlink, resolve it
+with `readlink -f` before `path:` flake references; `nix run path:` rejects a
+symlinked source directory. Run the metadata inspector when it will save manual discovery:
 
 ```bash
 python3 "$TOOLBOX/scripts/inspect_project.py" "$PROJECT"
